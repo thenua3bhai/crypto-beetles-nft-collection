@@ -1,26 +1,37 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.15; // this tells to use compiler 0.8.15 or more to compile this code.
+pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/Counters.sol"; //imported library
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-//default visibility specifier is internal if we dont specify for variables   ,,but for function we have to specify the specifier otherwise error comes.
-
+/**
+ * @title CryptoBeetles
+ * @dev Implementation of the ERC721 standard for non-fungible tokens with URI storage.
+ */
 contract CryptoBeetles is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
+    /**
+     * @dev Constructor that initializes the name and symbol of the NFT.
+     * @param _name Name of the NFT.
+     * @param _symbol Symbol of the NFT.
+     */
     constructor(
         string memory _name,
         string memory _symbol
-    ) ERC721(_name, _symbol) {} //Calling ERC721 constructor by Passing values,ERC721.sol is the parent of the parent of this file, but we can call ERC721 constructor from here like this
+    ) ERC721(_name, _symbol) {}
 
-    function mint(string memory tokenURI) public returns (uint256) {
-        uint256 newItemId = _tokenIds.current();
+    /**
+     * @dev Function to mint a new NFT with a given token URI.
+     * @param tokenURI URI of the token.
+     * @return newItemId ID of the newly created NFT.
+     */
+    function mint(string memory tokenURI) public returns (uint256 newItemId) {
+        newItemId = _tokenIds.current();
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
         _tokenIds.increment();
-        return newItemId;
     }
 }
